@@ -68,11 +68,11 @@ class AuctionsReporterPrinter extends AuctionsReporter {
 
 		$report .= "Total buy now price: ";
 		$report .= number_format($this->totalBuyNowPrice / 100, 2);
-		$report .= " z³\n";
+		$report .= " zl\n";
 		
 		$report .= "Total bid price: ";
 		$report .= number_format($this->totalBidPrice / 100, 2);
-		$report .= " z³\n";
+		$report .= " zl\n";
 		
 		return $report;
 	}
