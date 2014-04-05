@@ -2,6 +2,7 @@
 include_once 'AuctionsReporter.php';
 include_once 'RequestContext.php';
 include_once 'Auction.php';
+include_once 'StringBuilder.php';
 
 class AuctionsReporterPrinter extends AuctionsReporter {
 	
@@ -13,13 +14,12 @@ class AuctionsReporterPrinter extends AuctionsReporter {
 	public $totalActiveAuctions = 0;
 	public $totalFinishedAuctions = 0;
 	
-	public function createAllAuctionsReport(array $p_array) {
+	public function createAllAuctionsReport(array $p_array, StringBuilder $report) {
 		
-		$report = '';
 		$c = $this->getRequestContext();
 		
-		$report .= "ANNUAL SUMMARY OF ALL AUCTIONS.\n";
-		$report .= "*******************************\n\n";
+		$report->append("ANNUAL SUMMARY OF ALL AUCTIONS.\n");
+		$report->append("*******************************\n\n");
 		
 		$now = $c->getNow();
 		$month = (int) $now->format('n');
@@ -27,52 +27,52 @@ class AuctionsReporterPrinter extends AuctionsReporter {
 		echo "\r\nMonth -> " . $month . "\r\n";
 		
 		if ($month > 0 && $month <= 2) {
-			$report .= "Report period: 01/01/2012 and 31/03/2012\n";
+			$report->append("Report period: 01/01/2012 and 31/03/2012\n");
 		} else if ($month > 2 && $month <= 5) {
-			$report .= "Report period: 01/04/2012 and 30/06/2012\n";
+			$report->append("Report period: 01/04/2012 and 30/06/2012\n");
 		} else if ($month > 5 && $month <= 8) {
-			$report .= "Report period: 01/07/2012 and 30/09/2012\n";
+			$report->append("Report period: 01/07/2012 and 30/09/2012\n");
 		} else if ($month > 8 && $month <= 11) {
-			$report .= "Report period: 01/10/2012 and 31/12/2012\n";
+			$report->append("Report period: 01/10/2012 and 31/12/2012\n");
 		} else {
 			throw new Exception("Critical issue");
 		}
 		
-		$report .= "Total number of auctions: " . count($p_array);
-		$report .= "\n";
+		$report->append("Total number of auctions: " . count($p_array));
+		$report->append("\n");
 		
 		foreach ($p_array as $value) {
 			$this->data($value);
 		}
 		
-		$report .= "Including ";
-		$report .= $this->totalBid;
-		$report .= " bid auctions and ";
-		$report .= $this->totalBuyNow;
-		$report .= " buy now auctions\n";
+		$report->append("Including ");
+		$report->append($this->totalBid);
+		$report->append(" bid auctions and ");
+		$report->append($this->totalBuyNow);
+		$report->append(" buy now auctions\n");
 		
-		$report .= $this->totalNewAuctions;
-		$report .= " auctions are ";
-		$report .= $this->getDescription(AuctionStatus::NEW_);
-		$report .= "\n";
+		$report->append($this->totalNewAuctions);
+		$report->append(" auctions are ");
+		$report->append($this->getDescription(AuctionStatus::NEW_));
+		$report->append("\n");
 		
-		$report .= $this->totalActiveAuctions;
-		$report .= " auctions are ";
-		$report .= $this->getDescription(AuctionStatus::ACTIVE);
-		$report .= "\n";
+		$report->append($this->totalActiveAuctions);
+		$report->append(" auctions are ");
+		$report->append($this->getDescription(AuctionStatus::ACTIVE));
+		$report->append("\n");
 		
-		$report .= $this->totalFinishedAuctions;
-		$report .= " auctions are ";
-		$report .= $this->getDescription(AuctionStatus::FINISHED);
-		$report .= "\n";
+		$report->append($this->totalFinishedAuctions);
+		$report->append(" auctions are ");
+		$report->append($this->getDescription(AuctionStatus::FINISHED));
+		$report->append("\n");
 
-		$report .= "Total buy now price: ";
-		$report .= number_format($this->totalBuyNowPrice / 100, 2);
-		$report .= " zl\n";
+		$report->append("Total buy now price: ");
+		$report->append(number_format($this->totalBuyNowPrice / 100, 2));
+		$report->append(" zl\n");
 		
-		$report .= "Total bid price: ";
-		$report .= number_format($this->totalBidPrice / 100, 2);
-		$report .= " zl\n";
+		$report->append("Total bid price: ");
+		$report->append(number_format($this->totalBidPrice / 100, 2));
+		$report->append(" zl\n");
 		
 		return $report;
 	}

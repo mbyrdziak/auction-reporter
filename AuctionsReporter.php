@@ -5,7 +5,7 @@ class AuctionsReporter {
 	 * @param Auction[] $auctions
 	 * @return string
 	 */
-	public function createAllAuctionsReport(array $p_array) {
+	public function createAllAuctionsReport(array $p_array, StringBuilder $report) {
 		return "Sample Total Auctions Report";
 	}
 	
